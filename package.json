@@ -1,0 +1,51 @@
+{
+  "name": "checkyollama",
+  "displayName": "checkyollama",
+  "description": "A free extension to validate your model file syntax.",
+  "version": "0.0.1",
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "modelfile",
+        "aliases": [
+          "ModelFile",
+          "modelfile"
+        ],
+        "extensions": [
+          "modelfile",
+          "modelfile.*",
+          "Modelfile",
+          "Modelfile.*",
+          "Modelfile-*",
+          "Modelfile_*",
+          "modelfile-*",
+          "modelfile_*"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "modelfile",
+        "scopeName": "source.modelfile",
+        "path": "./syntaxes/modelfile.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/vscode": "^1.110.0",
+    "typescript": "^6.0.2"
+  }
+}

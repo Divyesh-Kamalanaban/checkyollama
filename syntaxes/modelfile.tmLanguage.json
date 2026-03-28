@@ -1,0 +1,88 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "ModelFile",
+	"patterns": [
+		{
+			"include":"#instruction-blocks"
+		},
+		{
+			"include" : "#parameters"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include":"#triple-quote"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"parameters":{
+			"match": "^\\s*(PARAMETER)\\b\\s([a-z_]+)\\s(.*)$",
+			"captures": {
+				"1": { "name": "keyword.control.modelfile" },
+				"2": { "name": "variable.parameter.modelfile" },
+				"3": { "name": "constant.numeric.modelfile" }
+      }
+		},
+		"keywords": {
+			"patterns": [
+				{
+				"name": "keyword.control.modelfile",
+				"match": "\\b(FROM|PARAMETER|TEMPLATE|SYSTEM|ADAPTER|LICENSE|MESSAGE|REQUIRES)\\b"
+				},
+				{
+				"name": "variable.parameter.modelfile",
+				"match": "\\b(num_ctx|min_p|repeat_last_n|repeat_penalty|temperature|seed|stop|num_predict|top_k|top_p)\\b"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.modelfile",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.modelfile",
+					"match": "\\\\."
+				}
+			]
+		},
+		"triple-quote":{
+			"name": "string.quoted.triple.modelfile",
+			"begin": "\"\"\"",
+			"end": "\"\"\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.modelfile",
+					"match": "\\\\."
+				}
+			]
+		},
+		"instruction-blocks": {
+        "patterns": [
+            {
+                "begin": "^(SYSTEM|TEMPLATE|MESSAGE)\\s(\"\"\"|\\\")",
+                "beginCaptures": {
+                    "1": { "name": "keyword.control.modelfile" },
+                    "2": { "name": "punctuation.definition.string.begin.modelfile" }
+                },
+                "end": "(\\2)",
+                "endCaptures": {
+                    "1": { "name": "punctuation.definition.string.end.modelfile" }
+                },
+                "name": "string.quoted.modelfile",
+                "patterns": [
+                    {
+                        "name": "constant.character.escape.modelfile",
+                        "match": "\\\\."
+                    }
+                ]
+            }
+        ]
+    }
+	},
+	"scopeName": "source.modelfile"
+}

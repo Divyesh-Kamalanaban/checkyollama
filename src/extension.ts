@@ -1,4 +1,3 @@
-import { start } from 'node:repl';
 import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -22,6 +21,8 @@ function validateModelfile(doc: vscode.TextDocument, collection: vscode.Diagnost
     if (doc.languageId !== 'modelfile') return;
 
     const diagnostics: vscode.Diagnostic[] = [];
+    checkRequiredFrom(doc, diagnostics);
+    checkValidParams(doc, diagnostics);
 
     // Apply the errors to the UI
     collection.set(doc.uri, diagnostics);
@@ -54,7 +55,7 @@ function checkValidParams(document: vscode.TextDocument, diagnostics: vscode.Dia
     for (let i=0;i<document.lineCount;i++){
         let currline = document.lineAt(i);
         let linetext = currline.text;
-        const match = currline.text.match(/^\\s*(PARAMETER)\\b\\s([a-z_]+)\\s(.*)$/);
+        const match = currline.text.match(/^\s*(PARAMETER)\b\s([a-z_]+)\s(.*)$/);
 
         //adding type safety
         if (match){

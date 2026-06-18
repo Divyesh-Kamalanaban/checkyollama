@@ -71,6 +71,124 @@ class ModelfileCompletionProvider implements vscode.CompletionItemProvider {
         new vscode.CompletionItem('system', vscode.CompletionItemKind.Enum),
     ];
 
+    private paramValueSuggestions: Map<string, vscode.CompletionItem[]> = new Map([
+        ['temperature', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.7', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['num_ctx', [
+            new vscode.CompletionItem('2048', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('4096', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('8192', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('16384', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('32768', vscode.CompletionItemKind.Value),
+        ]],
+        ['min_p', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.05', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['repeat_last_n', [
+            new vscode.CompletionItem('-1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('64', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('128', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('256', vscode.CompletionItemKind.Value),
+        ]],
+        ['repeat_penalty', [
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.2', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.5', vscode.CompletionItemKind.Value),
+        ]],
+        ['seed', [
+            new vscode.CompletionItem('0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('42', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('12345', vscode.CompletionItemKind.Value),
+        ]],
+        ['stop', [
+            new vscode.CompletionItem('"\\n"', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('"\\n\\n"', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('"User:"', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('"Assistant:"', vscode.CompletionItemKind.Value),
+        ]],
+        ['num_predict', [
+            new vscode.CompletionItem('-1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('128', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('512', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1024', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2048', vscode.CompletionItemKind.Value),
+        ]],
+        ['top_k', [
+            new vscode.CompletionItem('0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('10', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('20', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('40', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('80', vscode.CompletionItemKind.Value),
+        ]],
+        ['top_p', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.7', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.9', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['mirostat', [
+            new vscode.CompletionItem('0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2', vscode.CompletionItemKind.Value),
+        ]],
+        ['mirostat_eta', [
+            new vscode.CompletionItem('0.1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.2', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['mirostat_tau', [
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('5.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('10.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['num_gpu', [
+            new vscode.CompletionItem('0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('4', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('8', vscode.CompletionItemKind.Value),
+        ]],
+        ['tfs_z', [
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('2.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('5.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('10.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['typical_p', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.7', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.9', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+        ]],
+        ['presence_penalty', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.5', vscode.CompletionItemKind.Value),
+        ]],
+        ['frequency_penalty', [
+            new vscode.CompletionItem('0.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('0.5', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('1.5', vscode.CompletionItemKind.Value),
+        ]],
+    ]);
+
     private createParamItem(label: string, type: string, range: string, detail: string): vscode.CompletionItem {
         const item = new vscode.CompletionItem(label, vscode.CompletionItemKind.Variable);
         item.detail = `${type} — ${range}`;
@@ -88,22 +206,45 @@ class ModelfileCompletionProvider implements vscode.CompletionItemProvider {
         const lineText = document.lineAt(position).text;
         const lineUpToCursor = lineText.substring(0, position.character);
 
-        // Suggest instructions at start of line
-        if (/^\s*$/.test(lineUpToCursor) || /^\s*(FROM|PARAMETER|SYSTEM|TEMPLATE|MESSAGE|ADAPTER|LICENSE|REQUIRES)\s*$/.test(lineUpToCursor)) {
+        // Suggest parameters after PARAMETER keyword (including partial typing like "PARAMETER tempe")
+        const paramPrefixMatch = lineUpToCursor.match(/^\s*PARAMETER\s+(\w*)$/i);
+        if (paramPrefixMatch) {
+            const prefix = paramPrefixMatch[1].toLowerCase();
+            if (prefix.length === 0) {
+                return this.parameters;
+            }
+            return this.parameters.filter(item => String(item.label).toLowerCase().startsWith(prefix));
+        }
+
+        // Suggest roles after MESSAGE keyword (including partial typing)
+        const rolePrefixMatch = lineUpToCursor.match(/^\s*MESSAGE\s+(\w*)$/i);
+        if (rolePrefixMatch) {
+            const prefix = rolePrefixMatch[1].toLowerCase();
+            if (prefix.length === 0) {
+                return this.messageRoles;
+            }
+            return this.messageRoles.filter(item => String(item.label).toLowerCase().startsWith(prefix));
+        }
+
+        // Suggest parameter values after parameter name (e.g., "PARAMETER temperature ")
+        const paramValueMatch = lineUpToCursor.match(/^\s*PARAMETER\s+(\w+)\s+$/i);
+        if (paramValueMatch) {
+            const paramName = paramValueMatch[1].toLowerCase();
+            const suggestions = this.paramValueSuggestions.get(paramName);
+            if (suggestions) {
+                return suggestions;
+            }
+            // For parameters without predefined suggestions, return a generic value suggestion
+            return [new vscode.CompletionItem('0', vscode.CompletionItemKind.Value)];
+        }
+
+        // Suggest instructions after other keywords (ADAPTER, TEMPLATE, SYSTEM, LICENSE, REQUIRES, FROM)
+        const otherKeywordMatch = lineUpToCursor.match(/^\s*(FROM|SYSTEM|TEMPLATE|ADAPTER|LICENSE|REQUIRES)\s+$/i);
+        if (otherKeywordMatch) {
             return this.instructions;
         }
 
-        // Suggest parameters after PARAMETER keyword
-        if (/^\s*PARAMETER\s+$/i.test(lineUpToCursor)) {
-            return this.parameters;
-        }
-
-        // Suggest roles after MESSAGE keyword
-        if (/^\s*MESSAGE\s+$/i.test(lineUpToCursor)) {
-            return this.messageRoles;
-        }
-
-        // Suggest instructions if line is empty or just whitespace
+        // Suggest instructions only at start of line (empty line)
         if (/^\s*$/.test(lineUpToCursor)) {
             return this.instructions;
         }

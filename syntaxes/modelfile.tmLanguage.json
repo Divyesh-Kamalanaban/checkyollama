@@ -3,39 +3,42 @@
 	"name": "ModelFile",
 	"patterns": [
 		{
-			"include":"#instruction-blocks"
+			"include": "#instruction-blocks"
 		},
 		{
-			"include" : "#parameters"
+			"include": "#parameters"
 		},
 		{
 			"include": "#keywords"
 		},
 		{
-			"include":"#triple-quote"
+			"include": "#triple-quote"
 		},
 		{
 			"include": "#strings"
+		},
+		{
+			"include": "#comments"
 		}
 	],
 	"repository": {
-		"parameters":{
+		"parameters": {
 			"match": "^\\s*(PARAMETER)\\b\\s([a-z_]+)\\s(.*)$",
 			"captures": {
 				"1": { "name": "keyword.control.modelfile" },
 				"2": { "name": "variable.parameter.modelfile" },
 				"3": { "name": "constant.numeric.modelfile" }
-      }
+			}
 		},
 		"keywords": {
 			"patterns": [
 				{
-				"name": "keyword.control.modelfile",
-				"match": "\\b(FROM|PARAMETER|TEMPLATE|SYSTEM|ADAPTER|LICENSE|MESSAGE|REQUIRES)\\b"
+					"name": "keyword.control.modelfile",
+					"match": "\\b(FROM|PARAMETER|TEMPLATE|SYSTEM|ADAPTER|LICENSE|MESSAGE|REQUIRES)\\b"
 				},
 				{
-				"name": "variable.parameter.modelfile",
-				"match": "\\b(num_ctx|min_p|repeat_last_n|repeat_penalty|temperature|seed|stop|num_predict|top_k|top_p)\\b"
+					"name": "variable.parameter.modelfile",
+					"match": "\\b(temperature|num_ctx|min_p|repeat_last_n|repeat_penalty|seed|stop|num_predict|top_k|top_p|mirostat|mirostat_eta|mirostat_tau|num_gpu|tfs_z|typical_p|presence_penalty|frequency_penalty|chat_template)\\b"
 				}
 			]
 		},
@@ -50,7 +53,7 @@
 				}
 			]
 		},
-		"triple-quote":{
+		"triple-quote": {
 			"name": "string.quoted.triple.modelfile",
 			"begin": "\"\"\"",
 			"end": "\"\"\"",
@@ -61,28 +64,36 @@
 				}
 			]
 		},
+		"comments": {
+			"name": "comment.modelfile",
+			"match": "#.*$"
+		},
 		"instruction-blocks": {
-        "patterns": [
-            {
-                "begin": "^(SYSTEM|TEMPLATE|MESSAGE)\\s(\"\"\"|\\\")",
-                "beginCaptures": {
-                    "1": { "name": "keyword.control.modelfile" },
-                    "2": { "name": "punctuation.definition.string.begin.modelfile" }
-                },
-                "end": "(\\2)",
-                "endCaptures": {
-                    "1": { "name": "punctuation.definition.string.end.modelfile" }
-                },
-                "name": "string.quoted.modelfile",
-                "patterns": [
-                    {
-                        "name": "constant.character.escape.modelfile",
-                        "match": "\\\\."
-                    }
-                ]
-            }
-        ]
-    }
+			"patterns": [
+				{
+					"begin": "^(SYSTEM|TEMPLATE|MESSAGE)\\s(\"\"\"|\\\")",
+					"beginCaptures": {
+						"1": { "name": "keyword.control.modelfile" },
+						"2": { "name": "punctuation.definition.string.begin.modelfile" }
+					},
+					"end": "(\\2)",
+					"endCaptures": {
+						"1": { "name": "punctuation.definition.string.end.modelfile" }
+					},
+					"name": "string.quoted.modelfile",
+					"patterns": [
+						{
+							"name": "constant.character.escape.modelfile",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		"message-roles": {
+			"match": "\\b(user|assistant|system)\\b",
+			"name": "constant.language.modelfile"
+		}
 	},
 	"scopeName": "source.modelfile"
 }

@@ -1,8 +1,8 @@
 {
   "name": "checkyollama",
   "displayName": "checkyollama",
-  "description": "A free extension to validate your model file syntax.",
-  "version": "0.0.1",
+  "description": "First-class VS Code support for Ollama Modelfiles — autocomplete, hover docs, and real-time validation.",
+  "version": "0.1.0",
   "main": "./out/extension.js",
   "scripts": {
     "compile": "tsc -p ./",
@@ -15,6 +15,26 @@
     "Programming Languages"
   ],
   "contributes": {
+    "configuration": {
+      "title": "checkyollama",
+      "properties": {
+        "checkyollama.enableDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable real-time Modelfile validation diagnostics."
+        },
+        "checkyollama.enableAutocomplete": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable autocomplete for instructions and parameters."
+        },
+        "checkyollama.enableHover": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable hover documentation for parameters."
+        }
+      }
+    },
     "languages": [
       {
         "id": "modelfile",
@@ -34,6 +54,13 @@
         ],
         "filenames": [],
         "configuration": "./language-configuration.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "modelfile",
+        "scopeName": "source.modelfile",
+        "path": "./snippets/modelfile.json"
       }
     ],
     "grammars": [

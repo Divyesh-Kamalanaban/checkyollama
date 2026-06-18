@@ -1,0 +1,80 @@
+{
+  "Basic Modelfile": {
+    "prefix": "modelfile",
+    "body": [
+      "FROM ${1:model-name}",
+      "",
+      "PARAMETER temperature ${2:0.7}",
+      "PARAMETER num_ctx ${3:2048}",
+      "",
+      "SYSTEM \"\"\"",
+      "${4:You are a helpful assistant.}",
+      "\"\"\""
+    ],
+    "description": "Create a basic Modelfile with FROM, parameters, and system prompt"
+  },
+  "FROM instruction": {
+    "prefix": "from",
+    "body": ["FROM ${1:model-name}"],
+    "description": "Specify the base model"
+  },
+  "PARAMETER instruction": {
+    "prefix": "param",
+    "body": ["PARAMETER ${1|temperature,num_ctx,min_p,repeat_last_n,repeat_penalty,seed,stop,num_predict,top_k,top_p,mirostat,mirostat_eta,mirostat_tau,num_gpu,tfs_z,typical_p,presence_penalty,frequency_penalty,chat_template|} ${2:value}"],
+    "description": "Set a model parameter"
+  },
+  "SYSTEM prompt": {
+    "prefix": "system",
+    "body": ["SYSTEM \"\"\"", "${1:You are a helpful assistant.}", "\"\"\""],
+    "description": "Add a system prompt"
+  },
+  "TEMPLATE prompt": {
+    "prefix": "template",
+    "body": ["TEMPLATE \"\"\"", "${1:{{ .Prompt }}}", "\"\"\""],
+    "description": "Add a custom template"
+  },
+  "MESSAGE instruction": {
+    "prefix": "message",
+    "body": ["MESSAGE ${1|user,assistant,system|} \"${2:content}\""],
+    "description": "Add a message to the context"
+  },
+  "ADAPTER instruction": {
+    "prefix": "adapter",
+    "body": ["ADAPTER ${1:path/to/adapter}"],
+    "description": "Load a LoRA adapter"
+  },
+  "LICENSE instruction": {
+    "prefix": "license",
+    "body": ["LICENSE \"\"\"", "${1:License text here.}", "\"\"\""],
+    "description": "Specify a license"
+  },
+  "REQUIRES instruction": {
+    "prefix": "requires",
+    "body": ["REQUIRES ${1:capability}"],
+    "description": "Declare a required capability"
+  },
+  "Chat template Modelfile": {
+    "prefix": "chatmodelfile",
+    "body": [
+      "FROM ${1:model-name}",
+      "",
+      "PARAMETER temperature ${2:0.7}",
+      "PARAMETER num_ctx ${3:2048}",
+      "",
+      "TEMPLATE \"\"\"",
+      "{{- range .Messages }}",
+      "{{- if eq .Role \"user\" }}user",
+      "{{ .Content }}",
+      "{{- else if eq .Role \"assistant\" }}assistant",
+      "{{ .Content }}",
+      "{{- end }}",
+      "{{- end }}",
+      "\"\"\"",
+      "",
+      "SYSTEM \"\"\"",
+      "${4:You are a helpful assistant.}",
+      "\"\"\""
+    ],
+    "description": "Create a Modelfile with a chat template"
+  }
+}

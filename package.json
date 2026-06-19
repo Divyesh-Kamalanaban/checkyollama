@@ -3,6 +3,11 @@
   "displayName": "checkyollama",
   "description": "First-class VS Code support for Ollama Modelfiles — autocomplete, hover docs, and real-time validation.",
   "version": "0.1.0",
+  "publisher": "divyesh-kamalanaban",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/divyesh-kamalanaban/checkyollama.git"
+  },
   "main": "./out/extension.js",
   "scripts": {
     "compile": "tsc -p ./",

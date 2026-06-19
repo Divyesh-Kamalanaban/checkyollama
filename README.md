@@ -113,4 +113,4 @@ Issues and PRs welcome at [github.com/Divyesh-Kamalanaban/checkyollama](https://
 
 ## License
 
-MIT
+Apache License 2.0

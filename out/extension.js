@@ -59,6 +59,30 @@ class ModelfileCompletionProvider {
             new vscode.CompletionItem('LICENSE', vscode.CompletionItemKind.Keyword),
             new vscode.CompletionItem('REQUIRES', vscode.CompletionItemKind.Keyword),
         ];
+        this.fromModelSuggestions = [
+            new vscode.CompletionItem('llama3', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('llama3:8b', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('llama3:70b', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('mistral', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('codellama', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('gemma:2b', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('gemma:7b', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('mixtral:8x7b', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('phi3', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('qwen2:7b', vscode.CompletionItemKind.Value),
+        ];
+        this.licenseSuggestions = [
+            new vscode.CompletionItem('MIT', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('Apache-2.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('GPL-3.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('BSD-3-Clause', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('CC-BY-4.0', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('LGPL-3.0', vscode.CompletionItemKind.Value),
+        ];
+        this.adapterSuggestions = [
+            new vscode.CompletionItem('llama-adapter', vscode.CompletionItemKind.Value),
+            new vscode.CompletionItem('lora', vscode.CompletionItemKind.Value),
+        ];
         this.parameters = [
             this.createParamItem('temperature', 'float', '0.0 – 2.0', 'Controls randomness. Lower = more focused.'),
             this.createParamItem('num_ctx', 'int', '> 0', 'Context window size (tokens).'),
@@ -231,6 +255,15 @@ class ModelfileCompletionProvider {
             }
             return this.messageRoles.filter(item => String(item.label).toLowerCase().startsWith(prefix));
         }
+        // Suggest triple-quoted string after MESSAGE role (e.g. "MESSAGE user ")
+        const messageValueMatch = lineUpToCursor.match(/^\s*MESSAGE\s+\w+\s+$/i);
+        if (messageValueMatch) {
+            const item = new vscode.CompletionItem('"""..."\"', vscode.CompletionItemKind.Snippet);
+            item.insertText = new vscode.SnippetString('"""$0"""');
+            item.detail = 'Triple-quoted string';
+            item.documentation = new vscode.MarkdownString('Insert a triple-quoted string block for message content');
+            return [item];
+        }
         // Suggest parameter values after parameter name (e.g., "PARAMETER temperature ")
         const paramValueMatch = lineUpToCursor.match(/^\s*PARAMETER\s+(\w+)\s+$/i);
         if (paramValueMatch) {
@@ -242,10 +275,42 @@ class ModelfileCompletionProvider {
             // For parameters without predefined suggestions, return a generic value suggestion
             return [new vscode.CompletionItem('0', vscode.CompletionItemKind.Value)];
         }
-        // Suggest instructions after other keywords (ADAPTER, TEMPLATE, SYSTEM, LICENSE, REQUIRES, FROM)
-        const otherKeywordMatch = lineUpToCursor.match(/^\s*(FROM|SYSTEM|TEMPLATE|ADAPTER|LICENSE|REQUIRES)\s+$/i);
-        if (otherKeywordMatch) {
-            return this.instructions;
+        // Suggest values for FROM, TEMPLATE, LICENSE, ADAPTER, REQUIRES after the keyword (with or without trailing space)
+        const fromKeywordMatch = lineUpToCursor.match(/^\s*FROM\s/i);
+        if (fromKeywordMatch) {
+            const after = lineUpToCursor.replace(/^\s*FROM\s+/i, '');
+            if (after.length === 0)
+                return this.fromModelSuggestions;
+            return this.fromModelSuggestions.filter(item => String(item.label).toLowerCase().startsWith(after.toLowerCase()));
+        }
+        const templateKeywordMatch = lineUpToCursor.match(/^\s*TEMPLATE\s/i);
+        if (templateKeywordMatch) {
+            const item = new vscode.CompletionItem('"""..."\"', vscode.CompletionItemKind.Snippet);
+            item.insertText = new vscode.SnippetString('"""$0"""');
+            item.detail = 'Triple-quoted string';
+            item.documentation = new vscode.MarkdownString('Insert a triple-quoted string block');
+            return [item];
+        }
+        const licenseKeywordMatch = lineUpToCursor.match(/^\s*LICENSE\s/i);
+        if (licenseKeywordMatch) {
+            const after = lineUpToCursor.replace(/^\s*LICENSE\s+/i, '');
+            if (after.length === 0)
+                return this.licenseSuggestions;
+            return this.licenseSuggestions.filter(item => String(item.label).toLowerCase().startsWith(after.toLowerCase()));
+        }
+        const adapterKeywordMatch = lineUpToCursor.match(/^\s*ADAPTER\s/i);
+        if (adapterKeywordMatch) {
+            const after = lineUpToCursor.replace(/^\s*ADAPTER\s+/i, '');
+            if (after.length === 0)
+                return this.adapterSuggestions;
+            return this.adapterSuggestions.filter(item => String(item.label).toLowerCase().startsWith(after.toLowerCase()));
+        }
+        const requiresKeywordMatch = lineUpToCursor.match(/^\s*REQUIRES\s/i);
+        if (requiresKeywordMatch) {
+            const after = lineUpToCursor.replace(/^\s*REQUIRES\s+/i, '');
+            if (after.length === 0)
+                return [new vscode.CompletionItem('Enter required tool/path...', vscode.CompletionItemKind.Value)];
+            return [];
         }
         // Suggest instructions only at start of line (empty line)
         if (/^\s*$/.test(lineUpToCursor)) {

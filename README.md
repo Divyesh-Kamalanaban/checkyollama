@@ -94,6 +94,13 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 0.1.1
+Added additional autocomplete support and fortified support for multiple commands such as:
+- TEMPLATE
+- MESSAGE
+- REQUIRES
+- LICENSE
+
 ### 0.1.0
 
 Initial feature release:

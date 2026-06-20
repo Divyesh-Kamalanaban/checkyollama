@@ -2,7 +2,7 @@
   "name": "checkyollama",
   "displayName": "checkyollama",
   "description": "First-class VS Code support for Ollama Modelfiles — autocomplete, hover docs, and real-time validation.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "divyeshkamalanaban",
   "icon": "images/logo.png",
   "repository": {

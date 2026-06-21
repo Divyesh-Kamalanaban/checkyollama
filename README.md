@@ -3,6 +3,7 @@
 First-class VS Code support for [Ollama](https://ollama.com) Modelfiles. Get autocomplete, hover documentation, and real-time validation — all inside your editor.
 
 ![VS Code](https://img.shields.io/badge/VS_Code-007ACC?logo=visual-studio-code&logoColor=white)
+![CI](https://github.com/Divyesh-Kamalanaban/checkyollama/actions/workflows/main.yml/badge.svg)
 ![Ollama](https://img.shields.io/badge/Ollama-000000?logo=ollama&logoColor=white)
 
 ## Features
